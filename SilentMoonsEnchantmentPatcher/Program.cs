@@ -441,11 +441,19 @@ namespace SilentMoonsEnchantmentPatcher
                 .Where(x => x != null)
                 .Select(x => x!)
                 .ToList();
+
+            
+            var alreadyPatchedWeapons = new List<string?>();
             
             //patching
             Console.WriteLine($"Patching {weaponRecordsToPatch.Count} records");
             foreach (var weaponRecord in weaponRecordsToPatch)
             {
+                if (alreadyPatchedWeapons.Contains(weaponRecord.EditorID))
+                {                  
+                    continue;
+                }
+
                 noEnchantmentFormList.Items.Add(weaponRecord);
 
                 foreach (KeyValuePair<string, List<EnchantmentData>> pair in enchantments)
@@ -500,6 +508,8 @@ namespace SilentMoonsEnchantmentPatcher
                         }
                     }
                 }
+
+                alreadyPatchedWeapons.Add(weaponRecord.EditorID);
             }
 
             //finalizing
